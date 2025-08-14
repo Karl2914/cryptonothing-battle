@@ -1,0 +1,3 @@
+import { NextResponse } from 'next/server'; import { supabaseServer } from '@/lib/supabaseServer';
+function startOfWeekLocal(d:Date){ const day=d.getDay(); const s=new Date(d); s.setDate(d.getDate()-day); s.setHours(0,0,0,0); return s; }
+export async function GET(){ const start=startOfWeekLocal(new Date()).toISOString(); const { data, error } = await supabaseServer.from('donations').select('amount_usd').eq('status','confirmed').gte('created_at',start); if(error) return NextResponse.json({ error:error.message },{ status:500 }); const weeklyPot=(data||[]).reduce((sum:any,r:any)=>sum+(Number(r.amount_usd)||0),0); return NextResponse.json({ weeklyPot, prizePool: weeklyPot*0.10 }); }
