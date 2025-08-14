@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'; import { supabaseServer } from '@/lib/supabaseServer';
+import { NextResponse } from 'next/server'; import { supabaseServer } from '../../../lib/supabaseServer';
 export async function POST(req:Request){ const { donorName,txHash,chain,token,socialUrl,amountUsd } = await req.json();
   if(!txHash||!chain||!token) return NextResponse.json({ error:'Please fill tx hash, chain and token' }, { status:400 });
   const okDomains=['x.com','twitter.com','instagram.com','tiktok.com','t.me','telegram.me','telegram.org'];
